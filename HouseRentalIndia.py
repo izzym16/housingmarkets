@@ -24,7 +24,6 @@ rent_pairs.map(sns.scatterplot)
 
 # Plot the number of properties in each city available for rent
 sns.set_context("poster", font_scale=0.6)
-plt.figure(figsize=(10, 6))
 plt.xlabel("City")
 plt.ylabel("Number of Properties")
 ax = rent_df["City"].value_counts().plot(kind="bar", color="hotpink", rot=0)
