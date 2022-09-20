@@ -4,7 +4,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.cluster import KMeans
-
+import plotly.express as px
+import chart_studio as py
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 
 # import the rental dataset using pandas
 rent_df = pd.read_csv("/Users/izzyabate/Downloads/archive (1)/House_Rent_Dataset.csv")
@@ -18,32 +21,220 @@ print(rent_df.head())
 print(rent_df.describe())
 print(rent_df.columns)
 
-# Visualize the correlation your data and identify variables for further analysis
-rent_pairs = sns.PairGrid(rent_df)
-rent_pairs.map(sns.scatterplot)
-
-# Plot the number of properties in each city available for rent
-sns.set_context("poster", font_scale=0.6)
-plt.xlabel("City")
-plt.ylabel("Number of Properties")
-ax = rent_df["City"].value_counts().plot(kind="bar", color="hotpink", rot=0)
-
-for p in ax.patches:
-    ax.annotate(
-        int(p.get_height()),
-        (p.get_x() + 0.25, p.get_height() - 100),
-        ha="center",
-        va="bottom",
-        color="white",
-    )
+# Visualize the correlation your numerical data
+rent_pairs = sns.pairplot(data=rent_df, kind="kde")
+rent_pairs.fig.set_size_inches(15, 15)
+rent_pairs.fig.suptitle("Pair Plot", y=1.02)
 plt.show()
 
+# Bivariate Analysis of variables using Box plots
+rent_fig = make_subplots(
+    rows=7,
+    cols=2,
+    subplot_titles=(
+        "BHK vs Rent",
+        "BHK vs Size",
+        "Area Type vs Rent",
+        "Area Type vs Size",
+        "City vs Rent",
+        "City vs Size",
+        "Furnishing Status vs Rent",
+        "Furnishing Status vs Size",
+        "Tenant Preferred vs Rent",
+        "Tenant Preferred vs Size",
+        "Bathroom vs Size",
+        "Bathroom vs Rent",
+        "Point of Contact vs Size",
+        "Point of Contact vs Rent",
+    ),
+)
+rent_fig.append_trace(
+    go.Box(
+        x=rent_df["BHK"].values,
+        y=rent_df["Rent"].values,
+        name="BHK vs Rent",
+        boxmean="sd",
+    ),
+    row=1,
+    col=1,
+)
 
-# Scatter plot showing the Rent versus the Size in SqFt
-plt.scatter(rent_df["Size"], rent_df["Rent"], s=2, c="crimson")
-plt.xlabel("Size SqFt")
-plt.ylabel("Rent")
-plt.show()
+rent_fig.append_trace(
+    go.Box(
+        x=rent_df["BHK"].values,
+        y=rent_df["Size"].values,
+        name="BHK vs Size",
+        boxmean="sd",
+    ),
+    row=1,
+    col=2,
+)
+
+# Row 2
+rent_fig.append_trace(
+    go.Box(
+        x=rent_df["Area Type"].values,
+        y=rent_df["Rent"].values,
+        name="Area Type vs Rent",
+        boxmean="sd",
+    ),
+    row=2,
+    col=1,
+)
+
+rent_fig.append_trace(
+    go.Box(
+        x=rent_df["Area Type"].values,
+        y=rent_df["Size"].values,
+        name="Area Type vs Size",
+        boxmean="sd",
+    ),
+    row=2,
+    col=2,
+)
+
+# Row 3
+rent_fig.append_trace(
+    go.Box(
+        x=rent_df["City"].values,
+        y=rent_df["Rent"].values,
+        name="City vs Rent",
+        boxmean="sd",
+    ),
+    row=3,
+    col=1,
+)
+rent_fig.append_trace(
+    go.Box(
+        x=rent_df["City"].values,
+        y=rent_df["Size"].values,
+        name="City vs Size",
+        boxmean="sd",
+    ),
+    row=3,
+    col=2,
+)
+rent_fig.append_trace(
+    go.Box(
+        x=rent_df["Furnishing Status"].values,
+        y=rent_df["Rent"].values,
+        name="Furnishing Status vs Rent",
+        boxmean="sd",
+    ),
+    row=4,
+    col=1,
+)
+rent_fig.append_trace(
+    go.Box(
+        x=rent_df["Furnishing Status"].values,
+        y=rent_df["Size"].values,
+        name="Furnishing Status vs Size",
+        boxmean="sd",
+    ),
+    row=4,
+    col=2,
+)
+rent_fig.append_trace(
+    go.Box(
+        x=rent_df["Tenant Preferred"].values,
+        y=rent_df["Rent"].values,
+        name="Tenant Preferred vs Rent",
+        boxmean="sd",
+    ),
+    row=5,
+    col=1,
+)
+rent_fig.append_trace(
+    go.Box(
+        x=rent_df["Tenant Preferred"].values,
+        y=rent_df["Size"].values,
+        name="Tenant Preferred vs Size",
+        boxmean="sd",
+    ),
+    row=5,
+    col=2,
+)
+rent_fig.append_trace(
+    go.Box(
+        x=rent_df["Bathroom"].values,
+        y=rent_df["Rent"].values,
+        name="Bathroom vs Rent",
+        boxmean="sd",
+    ),
+    row=6,
+    col=1,
+)
+rent_fig.append_trace(
+    go.Box(
+        x=rent_df["Bathroom"].values,
+        y=rent_df["Size"].values,
+        name="Bathroom vs Size",
+        boxmean="sd",
+    ),
+    row=6,
+    col=2,
+)
+rent_fig.append_trace(
+    go.Box(
+        x=rent_df["Point of Contact"].values,
+        y=rent_df["Rent"].values,
+        name="Point of Contact vs Rent",
+        boxmean="sd",
+    ),
+    row=7,
+    col=1,
+)
+rent_fig.append_trace(
+    go.Box(
+        x=rent_df["Point of Contact"].values,
+        y=rent_df["Size"].values,
+        name="Point of Contact vs Size",
+        boxmean="sd",
+    ),
+    row=7,
+    col=2,
+)
+rent_fig["layout"]["xaxis"]["title"] = "BHK"
+rent_fig["layout"]["xaxis2"]["title"] = "BHK"
+rent_fig["layout"]["yaxis"]["title"] = "Rent"
+rent_fig["layout"]["yaxis2"]["title"] = "Size"
+
+rent_fig["layout"]["xaxis3"]["title"] = "Area Type"
+rent_fig["layout"]["xaxis4"]["title"] = "Area Type"
+rent_fig["layout"]["yaxis3"]["title"] = "Rent"
+rent_fig["layout"]["yaxis4"]["title"] = "Size"
+
+rent_fig["layout"]["xaxis5"]["title"] = "City"
+rent_fig["layout"]["xaxis6"]["title"] = "City"
+rent_fig["layout"]["yaxis5"]["title"] = "Rent"
+rent_fig["layout"]["yaxis6"]["title"] = "Size"
+
+rent_fig["layout"]["xaxis7"]["title"] = "Furnishing Status"
+rent_fig["layout"]["xaxis8"]["title"] = "Furnishing Status"
+rent_fig["layout"]["yaxis7"]["title"] = "Rent"
+rent_fig["layout"]["yaxis8"]["title"] = "Size"
+
+rent_fig["layout"]["xaxis9"]["title"] = "Tenant Preferred"
+rent_fig["layout"]["xaxis10"]["title"] = "Tenant Preferred"
+rent_fig["layout"]["yaxis9"]["title"] = "Rent"
+rent_fig["layout"]["yaxis10"]["title"] = "Size"
+
+rent_fig["layout"]["xaxis11"]["title"] = "Bathroom"
+rent_fig["layout"]["xaxis12"]["title"] = "Bathroom"
+rent_fig["layout"]["yaxis11"]["title"] = "Rent"
+rent_fig["layout"]["yaxis12"]["title"] = "Size"
+
+rent_fig["layout"]["xaxis13"]["title"] = "Point of Contact"
+rent_fig["layout"]["xaxis14"]["title"] = "Point of Contact"
+rent_fig["layout"]["yaxis13"]["title"] = "Rent"
+rent_fig["layout"]["yaxis14"]["title"] = "Size"
+
+rent_fig.update_layout(
+    title=dict(text="Box Plots for bivariate analysis", font=dict(size=30)),
+    height=1500,
+)
+rent_fig.show()
+
 
 # Relationship between House Rent and House Size
 x = rent_df["Rent"]
@@ -57,6 +248,33 @@ plt.ticklabel_format(style="plain")
 plt.scatter(x, y, c=colors, s=sizes, alpha=0.3, cmap="RdBu")
 plt.colorbar()
 plt.show()
+
+# Multivariate analysis
+# Multivariate analysis of Size vs Rent and BHK
+fig = make_subplots(
+    rows=1, cols=1, subplot_titles=("Scatter Plot of Size vs Rent and BHK")
+)
+fig.append_trace(
+    go.Scatter(
+        x=rent_df["BHK"].values,
+        y=rent_df["Size"].values,
+        name="Size vs Rent and BHK",
+        mode="markers",
+        marker_color=rent_df["BHK"],
+        marker_size=rent_df["Rent"] / 20000,
+    ),
+    row=1,
+    col=1,
+)
+fig.update_layout(legend={"itemsizing": "trace"})
+fig.update_layout(
+    showlegend=False,
+    title=dict(text="Scatter Plots for Multivariate Analysis", font=dict(size=30)),
+    height=1500,
+)
+fig["layout"]["xaxis1"]["title"] = "BHK"
+fig["layout"]["yaxis1"]["title"] = "Size in SqFt"
+fig.show()
 
 # Analysis using K-means clustering
 rent_kmeans = rent_df.loc[:, ["Rent", "Size"]].values
