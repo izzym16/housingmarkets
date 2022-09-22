@@ -18,5 +18,6 @@ https://www.kaggle.com/datasets/iamsouravbanerjee/house-rent-prediction-dataset
 - Bathroom: Number of Bathrooms.
 - Point of Contact: Whom should you contact for more information regarding the Houses/Apartments/Flats.
 
-
-
+# Guide to Repository 
+- The PDF file shows the code used to complete the analysis along with the graphs generated
+- The python file shows the raw code
