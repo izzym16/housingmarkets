@@ -1,4 +1,5 @@
 # Housing Markets
+## [Find the project here!](https://github.com/izzym16/housingmarkets/blob/622e4bbc0cb30026a5f8c20662b982123b077e2b/IndianHousingfinal.pdf)
 ### Indian Rental Markets
 This project consits of bivariate anlysis , multivariate analysis, and analysis using k-means clustering to group the properties in the data set. 
 This projects utilizes packages including: matplotlib, seaborn, sklearn.cluster, plotly, and pandas.
